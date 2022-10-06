@@ -33,11 +33,6 @@
 			return new_list;
 		}
 
-		_filter(
-			users,
-			user => user.age >= 30
-		)
-
 		/**
 		 * 배열 또는 유사배열 내에 함수를 호출한 결과에 대한 각각의 요소를 반환한다.
 		 * @param [array] || [arraylike]
@@ -51,15 +46,6 @@
 			}
 			return new_list;
 		}
-
-		_map(
-			_filter(
-				users,
-				user => user.age >= 30
-			),
-			user => user.name
-		)
-		
 
 	</script>
 
