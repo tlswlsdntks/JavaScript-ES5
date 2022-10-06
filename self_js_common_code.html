@@ -30,8 +30,17 @@
 		}
 
 		console.log(_filter(users, user => user.age >= 30));
-
 		
+		// _map
+		function _map(list, mapper){
+			var new_list = [];
+			for(var i = 0, len = list.length; i < len; i++){
+				new_list.push(mapper(list[i]));
+			}
+			return new_list;
+		}
+		
+		console.log(_map(_filter(users, user => user.age >= 30), user => user.name));
 
 	</script>
 
