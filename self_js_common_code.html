@@ -34,6 +34,43 @@
 			}
 			return new_list;
 		}
+		
+		/**
+		 * 배열 또는 유사배열을 반복하며, 함수를 호출한다.
+		 * @param [array] || [arraylike] list
+		 * @param {function} iter
+		 * @returns [array]
+		 */
+		var _each = (list, iter) => {
+			for(var i = 0, len = list.length; i < len; i++){
+				iter(list[i]);
+			}
+			return list;
+		}
+
+		/**
+		 * 함수의 인자를 왼쪽부터 한개씩 적용하여, 필요한 인자가 모두 채워지면 함수를 호출한다.
+		 * @param {function} fn
+		 * @param {object} a, b
+		 * @returns {function} || {object}
+		 */
+		var _curry = fn => {
+			return function(a, b){
+				return arguments.length == 2 ? fn(a, b) : function(b){return fn(a, b);};
+			}
+		}
+
+		/**
+		 * 함수의 인자를 오른쪽부터 한개씩 적용하여, 필요한 인자가 모두 채워지면 함수를 호출한다.
+		 * @param {function} fn
+		 * @param {object} a, b
+		 * @returns {function} || {object}
+		 */
+		 var _curryr = fn => {
+			return function(a, b){
+				return arguments.length == 2 ? fn(b, a) : function(b){return fn(b, a);};
+			}
+		}
 
 	</script>
 
