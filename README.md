@@ -1,3 +1,3 @@
-JavaScript Modules
+JavaScript Modules (Object Oriented Programming -> Functional Programming)
 
-Object Oriented Programming -> Functional Programming
+
