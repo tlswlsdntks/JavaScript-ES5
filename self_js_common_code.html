@@ -19,28 +19,47 @@
 			{ id: 8, name: 'MP', age: 23 },
 		];
 
-        	// _filter
-		function _filter(list, predi){
+		/**
+		 * 배열 또는 유사배열을 조건에 따라 필터링한다.
+		 * @param [array] || [arraylike]
+		 * @param {function}
+		 * @returns [array] || [arraylike]
+		 */
+		var _filter = (list, predi) => {
 			var new_list = [];
 			for(var i = 0, len = list.length; i < len; i++){
-				if(predi(list[i]))
-					new_list.push(list[i]);
+				if(predi(list[i])) new_list.push(list[i]);
 			}
 			return new_list;
 		}
 
-		console.log(_filter(users, user => user.age >= 30));
-		
-		// _map
-		function _map(list, mapper){
+		_filter(
+			users,
+			user => user.age >= 30
+		)
+
+		/**
+		 * 배열 또는 유사배열 내에 함수를 호출한 결과에 대한 각각의 요소를 반환한다.
+		 * @param [array] || [arraylike]
+		 * @param {function}
+		 * @returns [array] || [arraylike]
+		 */
+		var _map = (list, mapper) => {
 			var new_list = [];
 			for(var i = 0, len = list.length; i < len; i++){
 				new_list.push(mapper(list[i]));
 			}
 			return new_list;
 		}
+
+		_map(
+			_filter(
+				users,
+				user => user.age >= 30
+			),
+			user => user.name
+		)
 		
-		console.log(_map(_filter(users, user => user.age >= 30), user => user.name));
 
 	</script>
 
