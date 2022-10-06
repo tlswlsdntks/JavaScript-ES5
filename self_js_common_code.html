@@ -66,7 +66,7 @@
 		 * @param {object} a, b
 		 * @returns {function} || {object}
 		 */
-		 var _curryr = fn => {
+		var _curryr = fn => {
 			return function(a, b){
 				return arguments.length == 2 ? fn(b, a) : function(b){return fn(b, a);};
 			}
