@@ -9,8 +9,8 @@
 
 		/**
 		 * 배열 또는 유사배열을 조건에 따라 필터링한다.
-		 * @param [array] || [arraylike]
-		 * @param {function}
+		 * @param [array] || [arraylike] list
+		 * @param {function} predi
 		 * @returns [array]
 		 */
 		var _filter = (list, predi) => {
@@ -23,8 +23,8 @@
 
 		/**
 		 * 배열 또는 유사배열 내에 함수를 호출한 결과에 대한 각각의 요소를 반환한다.
-		 * @param [array] || [arraylike]
-		 * @param {function}
+		 * @param [array] || [arraylike] list
+		 * @param {function} mapper
 		 * @returns [array]
 		 */
 		var _map = (list, mapper) => {
