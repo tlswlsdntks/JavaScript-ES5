@@ -1,1 +1,1 @@
-* Functional Programming (JavaScript)
+* functional programming common code related to work
