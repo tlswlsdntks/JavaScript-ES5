@@ -1,1 +1,1 @@
-* functional programming common code related to work
+* i'm working on the common code related to work
