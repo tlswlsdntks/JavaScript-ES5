@@ -103,6 +103,16 @@
 			var slice = Array.prototype.slice;
 			return slice.call(list, num || 1);
 		}
+		
+		/**
+		 * 인자로 들어온 N개의 함수를 연속적으로 실행하여 하나의 결과값을 반환한다.
+		 * @param {object} arg
+		 * @returns {object}
+		 */
+		function _pipe(){
+			var fns = arguments;
+			return (arg) => _reduce(fns, (arg, fn) => arg = fn(arg), arg);
+		}
 
 	</script>
 
