@@ -1,1 +1,1 @@
-* the common code related to work for raise the level of work
+* the common code to raise the level of work
