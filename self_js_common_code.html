@@ -113,6 +113,16 @@
 			var fns = arguments;
 			return (arg) => _reduce(fns, (arg, fn) => arg = fn(arg), arg);
 		}
+		
+		/**
+		 * 첫번째 인자를 N개의 함수의 인자로 지정하고, 연속적으로 실행하여 하나의 결과값을 반환한다.
+		 * @param {object} arg
+		 * @returns {function}
+		 */
+		function _go(arg){
+			var fns = _rest(arguments);
+			return _pipe.apply(null, fns)(arg);
+		}
 
 	</script>
 
