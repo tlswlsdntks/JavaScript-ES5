@@ -6,6 +6,30 @@
 <body>
 	
 	<script>
+		
+		/**
+		 * 함수의 인자를 왼쪽부터 한개씩 적용하여, 필요한 인자가 모두 채워지면 함수를 호출한다.
+		 * @param {function} fn
+		 * @param {object} a, b
+		 * @returns {function} || {object}
+		 */
+		var _curry = fn => {
+			return function(a, b){
+				return arguments.length == 2 ? fn(a, b) : function(b){return fn(a, b);};
+			}
+		}
+
+		/**
+		 * 함수의 인자를 오른쪽부터 한개씩 적용하여, 필요한 인자가 모두 채워지면 함수를 호출한다.
+		 * @param {function} fn
+		 * @param {object} a, b
+		 * @returns {function} || {object}
+		 */
+		var _curryr = fn => {
+			return function(a, b){
+				return arguments.length == 2 ? fn(b, a) : function(b){return fn(b, a);};
+			}
+		}
 
 		/**
 	         * 지정된 객체 자체의 열거 가능한 문자속성 [key, value] 쌍의 배열 중 [value] 가 반환된다.
@@ -14,6 +38,7 @@
 	         * @returns {object}
 	         */
 	        var _get = (obj, key) => !!!obj ? undefined : obj[key];
+		_get = _curryr(_get);
 		
 		/**
 		 * 배열 또는 유사배열을 반복하여 함수를 호출한다.
@@ -22,7 +47,8 @@
 		 * @returns [array]
 		 */
 		var _each = (list, iter) => {
-			for(var i = 0, len = list.length; i < len; i++){
+			var _length = _get('length');
+			for (var i = 0, len = _length(list); i < len; i++) {
 				iter(list[i]);
 			}
 			return list;
@@ -52,30 +78,6 @@
 			var new_list = [];
 			_each(list, val => new_list.push(mapper(val)));
 			return new_list;
-		}
-		
-		/**
-		 * 함수의 인자를 왼쪽부터 한개씩 적용하여, 필요한 인자가 모두 채워지면 함수를 호출한다.
-		 * @param {function} fn
-		 * @param {object} a, b
-		 * @returns {function} || {object}
-		 */
-		var _curry = fn => {
-			return function(a, b){
-				return arguments.length == 2 ? fn(a, b) : function(b){return fn(a, b);};
-			}
-		}
-
-		/**
-		 * 함수의 인자를 오른쪽부터 한개씩 적용하여, 필요한 인자가 모두 채워지면 함수를 호출한다.
-		 * @param {function} fn
-		 * @param {object} a, b
-		 * @returns {function} || {object}
-		 */
-		var _curryr = fn => {
-			return function(a, b){
-				return arguments.length == 2 ? fn(b, a) : function(b){return fn(b, a);};
-			}
 		}
 		
 		/**
