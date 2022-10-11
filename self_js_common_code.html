@@ -59,7 +59,6 @@
 		 * @returns [array]
 		 */
 		var _each = (list, iter) => {
-			var _length = _get('length');
 			var keys = _keys(list);
 			for (var i = 0, len = keys.length; i < len; i++) {
 				iter(list[keys[i]]);
