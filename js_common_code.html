@@ -162,6 +162,35 @@
 		 * @returns [array]
 		 */
 		var _compact = _filter(_identity);
+		
+		/**
+		 * 인자로 전달된 조건을 만족하는 배열 요소의 값만을 반환한다.
+		 * @param [array] list
+		 * @param {function} predi
+		 * @returns {object}
+		 */
+		var _find = (list, predi) => {
+			var keys = _keys(list);
+			for(var i = 0, len = keys.length; i < len; i++){
+				var val = list[keys[i]];
+				if(predi(val)) return val;
+			}
+		}
+
+		/**
+		 * 인자로 전달된 조건을 만족하는 배열 요소의 인덱스만을 반환한다.
+		 * @param [array] list
+		 * @param {function} predi
+		 * @returns {object}
+		 */
+		var _find_index = (list, predi) => {
+			var keys = _keys(list);
+			for(var i = 0, len = keys.length; i < len; i++){
+				var val = list[keys[i]];
+				if(predi(val)) return i;
+			}
+			return -1;
+		}
 
 	</script>
 
