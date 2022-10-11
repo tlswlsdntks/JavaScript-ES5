@@ -45,12 +45,8 @@
 		 * @param {object} obj
 	         * @returns [array]
 	         */
-		var _is_object = (obj) => {
-			return typeof obj == "object" && !!obj;
-		}
-		var _keys = (obj) => {
-			return _is_object(obj) ? Object.keys(obj) : [];
-		}
+		var _is_object = obj => typeof obj == "object" && !!obj;
+		var _keys = obj => _is_object(obj) ? Object.keys(obj) : [];
 		  
 		/**
 		 * 배열 또는 유사배열을 반복하여 함수를 호출한다.
