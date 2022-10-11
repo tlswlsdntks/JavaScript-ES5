@@ -130,6 +130,38 @@
 		var _go = (arg, ...fns) => _pipe.apply(null, fns)(arg);
 		_filter = _curryr(_filter),
 		_map = _curryr(_map);
+		
+		/**
+		 * 특정 객체를 대상의 [value] 로 이루어진 배열로 반환한다.
+		 * @param {object} data
+		 * @returns [array]
+		 */
+		var _identity = val => val;
+		var _values = (data) => _map(_identity, data);
+
+		/**
+		 * 객체 또는 배열을 [key] 에 해당하는 [value] 로 이루어진 배열로 반환한다.
+		 * @param {object} || [array] data
+		 * @param {object} key
+		 * @returns [array]
+		 */
+		var _pluck = (data, key) => _map(_get(key), data);
+		
+		/**
+		 * 배열 또는 유사배열을 조건에 반대하여 필터링한다.
+		 * @param [array] || [arraylike] list
+		 * @param {function} predi
+		 * @returns [array]
+		 */
+		var _negate = predi => val => !predi(val);
+		var _reject = (predi, list) => _filter(_negate(predi), list);
+		 
+		/**
+		 * 배열의 모든 false 값(NaN, undefined, false, 0, null 또는 빈 문자열)을 제거한 후 배열을 반환한다.
+		 * @param {object} || [array] b
+		 * @returns [array]
+		 */
+		var _compact = _filter(_identity);
 
 	</script>
 
