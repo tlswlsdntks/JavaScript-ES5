@@ -130,10 +130,9 @@
 		 * @param {object} arg
 		 * @returns {function}
 		 */
-		function _go(arg){
-			var fns = _rest(arguments);
-			return _pipe.apply(null, fns)(arg);
-		}
+		var _go = (arg, ...fns) => _pipe.apply(null, fns)(arg);
+		_filter = _curryr(_filter),
+		_map = _curryr(_map);
 
 	</script>
 
