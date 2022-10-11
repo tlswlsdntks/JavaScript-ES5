@@ -191,6 +191,24 @@
 			}
 			return -1;
 		}
+		
+		/**
+		 * 배열의 각 엘리먼트에 대해서 반환 값이 하나라도 true가 발생하면 true를 반환한다.
+		 * @param [array] list
+		 * @param {function} predi
+		 * @returns {boolean}
+		 */
+		var _some = (list, predi) => _find_index(list, predi) != -1;
+
+		/**
+		 * 배열의 각 엘리먼트에 대해서 반환 값이 모두 true가 발생하면 true를 반환한다.
+		 * @param [array] list
+		 * @param {function} predi
+		 * @returns {boolean}
+		 */
+		var _every = (list, predi) => _find_index(list, _negate(predi)) == -1;
+		
+		
 
 	</script>
 
