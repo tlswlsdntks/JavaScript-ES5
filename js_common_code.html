@@ -211,6 +211,25 @@
 		 */
 		var _every = (list, predi) => _find_index(list, _negate(predi)) == -1;
 		
+		/**
+		 * 배열의 각 엘리먼트에 대해서 주어진 숫자들 중 가장 작은/큰 값을 반환한다.
+		 * @param [array] list
+		 * @returns {object}
+		 */
+		var _min = list => _reduce(list, (a, b) => a < b ? a : b);
+		var _max = list => _reduce(list, (a, b) => a > b ? a : b);
+
+		/**
+		 * 배열의 각 엘리먼트에 대해서 주어진 숫자들 중 조건에 따른 가장 작은/큰 값을 반환한다.
+		 * @param [array] list
+		 * @param {function} iter
+		 * @returns {object}
+		 */
+		var _min_by = (list, iter) => _reduce(list, (a, b) => iter(a) < iter(b) ? a : b);
+		var _max_by = (list, iter) => _reduce(list, (a, b) => iter(a) > iter(b) ? a : b);
+		_min_by = _curryr(_min_by),
+		_max_by = _curryr(_max_by);
+		
 	</script>
 
 </body>
