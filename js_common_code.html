@@ -244,6 +244,19 @@
 		_group_by = _curryr(_group_by);
 		var _head = data => data[0];
 		
+		/**
+		 * 배열의 각 엘리멘트를 주어진 조건의 개수에 따라 묶거나 분류하여 새로운 객체로 반환한다.
+		 * @param [array] list
+		 * @param {function} iter
+		 * @returns {object}
+		 */
+		var _inc = (memo, key) => {
+			memo[key] ? memo[key]++ : memo[key] = 1;
+			return memo;
+		}
+		var _count_by = (list, iter) => _reduce(list, (val, memo) => _inc(memo, iter(val)), {});
+		_count_by = _curryr(_count_by);
+		
 	</script>
 
 </body>
