@@ -259,6 +259,37 @@
 		var _count_by = (list, iter) => _reduce(list, (val, memo) => _inc(memo, iter(val)), {});
 		_count_by = _curryr(_count_by);
 		
+		/**
+		 * 지연 평가
+		 * @param [array] _.range(100)
+		 * @param {function} L.map, L.filter, L.reject
+		 * @param {function} L.take, L.some, L.every, L.find
+		 * @returns {object}
+		 */
+		var mi = 0;
+		var fi = 0;
+		_.go(
+			_.range(100),
+			L.map(val => {
+				++mi;
+				return val * val;
+			}),
+			L.filter(val => {
+				++fi;
+				return val % 2;
+			}),
+			// L.reject(val => {
+			// 	++fi;
+			// 	return val % 2;
+			// }),
+			L.take(5),
+			// L.some(val => val > 100),
+			// L.every(val => val < 100),
+			// L.find(val => val > 100),
+			console.log
+		)
+		console.log(mi, fi);
+		
 	</script>
 
 </body>
