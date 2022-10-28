@@ -137,7 +137,7 @@
 		 */
 		var _go = (arg, ...fns) => _pipe.apply(null, fns)(arg);
 		_filter = _curryr(_filter),
-			_map = _curryr(_map);
+		_map = _curryr(_map);
 
 		/**
 		 * 특정 객체를 대상의 [value] 로 이루어진 배열로 반환한다.
@@ -233,7 +233,7 @@
 		var _min_by = (list, iter) => _reduce(list, (a, b) => iter(a) < iter(b) ? a : b);
 		var _max_by = (list, iter) => _reduce(list, (a, b) => iter(a) > iter(b) ? a : b);
 		_min_by = _curryr(_min_by),
-			_max_by = _curryr(_max_by);
+		_max_by = _curryr(_max_by);
 
 		/**
 		 * 배열의 각 엘리멘트를 주어진 조건에 따라 묶거나 분류하여 새로운 객체로 반환한다.
