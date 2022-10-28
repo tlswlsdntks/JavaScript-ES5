@@ -40,19 +40,19 @@
 		}
 
 		/**
-			 * 지정된 객체 자체의 열거 가능한 문자속성 [key, value] 쌍의 배열 중 [value] 가 반환된다.
-			 * @param {object} obj
-			 * @param {object} key
-			 * @returns {object}
-			 */
+		 * 지정된 객체 자체의 열거 가능한 문자속성 [key, value] 쌍의 배열 중 [value] 가 반환된다.
+		 * @param {object} obj
+		 * @param {object} key
+		 * @returns {object}
+		 */
 		var _get = (obj, key) => !!!obj ? undefined : obj[key];
 		_get = _curryr(_get);
 
 		/**
 		 * 지정된 객체 자체의 열거 가능한 문자속성 [key, value] 쌍의 배열 중 [key] 가 배열로 반환된다.
 		 * @param {object} obj
-			 * @returns [array]
-			 */
+		 * @returns [array]
+		 */
 		var _is_object = obj => typeof obj == "object" && !!obj;
 		var _keys = obj => _is_object(obj) ? Object.keys(obj) : [];
 
