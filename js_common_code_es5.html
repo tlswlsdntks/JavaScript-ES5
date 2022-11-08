@@ -1,0 +1,300 @@
+<html>
+
+<head>
+	<meta charset="UTF-8" />
+	<title> js_common_code </title>
+	<!-- 함수형 자바스크립트 라이브러리: 부분 적용, 파이프라인, 불변적인 값 다루기, 가변적인 값 다루기, 템플릿 엔진, 비동기 제어, 이벤트 등의 기능을 제공하고 있다.  -->
+	<script src="partial.js"></script>
+</head>
+
+<body>
+
+	<script>
+
+		// 즉시 실행 함수 표현(IIFE, Immediately Invoked Function Expression)
+		; ((__) => { alert('_iife') })();
+		// ;(($)  => {alert('_jQuery')})(jQuery);
+
+		/**
+		 * 함수의 인자를 왼쪽부터 한개씩 적용하여, 필요한 인자가 모두 채워지면 함수를 호출한다.
+		 * @param {function} fn
+		 * @param {object} a, b
+		 * @returns {function} || {object}
+		 */
+		var _curry = fn => {
+			return function (a, b) {
+				return arguments.length == 2 ? fn(a, b) : function (b) { return fn(a, b); };
+			}
+		}
+
+		/**
+		 * 함수의 인자를 오른쪽부터 한개씩 적용하여, 필요한 인자가 모두 채워지면 함수를 호출한다.
+		 * @param {function} fn
+		 * @param {object} a, b
+		 * @returns {function} || {object}
+		 */
+		var _curryr = fn => {
+			return function (a, b) {
+				return arguments.length == 2 ? fn(b, a) : function (b) { return fn(b, a); };
+			}
+		}
+
+		/**
+			 * 지정된 객체 자체의 열거 가능한 문자속성 [key, value] 쌍의 배열 중 [value] 가 반환된다.
+			 * @param {object} obj
+			 * @param {object} key
+			 * @returns {object}
+			 */
+		var _get = (obj, key) => !!!obj ? undefined : obj[key];
+		_get = _curryr(_get);
+
+		/**
+		 * 지정된 객체 자체의 열거 가능한 문자속성 [key, value] 쌍의 배열 중 [key] 가 배열로 반환된다.
+		 * @param {object} obj
+			 * @returns [array]
+			 */
+		var _is_object = obj => typeof obj == "object" && !!obj;
+		var _keys = obj => _is_object(obj) ? Object.keys(obj) : [];
+
+		/**
+		 * 배열 또는 유사배열을 반복하여 함수를 호출한다.
+		 * @param [array] || [arraylike] list
+		 * @param {function} iter
+		 * @returns [array]
+		 */
+		var _each = (list, iter) => {
+			// var _length = _get('length');
+			var keys = _keys(list);
+			for (var i = 0, len = keys.length; i < len; i++) {
+				iter(list[keys[i]]);
+			}
+			return list;
+		}
+
+		/**
+		 * 배열 또는 유사배열을 조건에 따라 필터링한다.
+		 * @param [array] || [arraylike] list
+		 * @param {function} predi
+		 * @returns [array]
+		 */
+		var _filter = (list, predi) => {
+			var new_list = [];
+			_each(list, val => {
+				if (predi(val)) new_list.push(val);
+			})
+			return new_list;
+		}
+
+		/**
+		 * 배열 또는 유사배열 내에 함수를 호출한 결과에 대한 각각의 요소를 반환한다.
+		 * @param [array] || [arraylike] list
+		 * @param {function} mapper
+		 * @returns [array]
+		 */
+		var _map = (list, mapper) => {
+			var new_list = [];
+			_each(list, val => new_list.push(mapper(val)));
+			return new_list;
+		}
+
+		/**
+		 * 배열 또는 유사배열로부터 특정 범위까지의 값을 제외한 새로운 배열을 만든다.
+		 * @param [array] list
+		 * @param {int} num
+		 * @returns [array]
+		 */
+		var _rest = (list, num) => {
+			var slice = Array.prototype.slice;
+			return slice.call(list, num || 1);
+		}
+
+		/**
+		 * 배열의 요소를 순차적으로 순회하면서 리듀서(iter) 함수를 호출하고 하나의 결과값을 반환한다.
+		 * @param [array] list
+		 * @param {function} iter
+		 * @returns {object}
+		 */
+		function _reduce(list, iter, memo) {
+			if (arguments.length == 2) {
+				memo = list[0];
+				list = _rest(list);
+			}
+			_each(list, val => memo = iter(memo, val));
+			return memo;
+		}
+
+		/**
+		 * 인자로 들어온 N개의 함수를 연속적으로 실행하여 하나의 결과값을 반환한다.
+		 * @param {object} arg
+		 * @returns {object}
+		 */
+		var _pipe = (...fns) => arg => _reduce(fns, (fn, arg) => fn(arg), arg);
+
+		/**
+		 * 첫번째 인자를 N개의 함수의 인자로 지정하고, 연속적으로 실행하여 하나의 결과값을 반환한다.
+		 * @param {object} arg
+		 * @returns {function}
+		 */
+		var _go = (arg, ...fns) => _pipe.apply(null, fns)(arg);
+		_filter = _curryr(_filter),
+			_map = _curryr(_map);
+
+		/**
+		 * 특정 객체를 대상의 [value] 로 이루어진 배열로 반환한다.
+		 * @param {object} data
+		 * @returns [array]
+		 */
+		var _identity = val => val;
+		var _values = (data) => _map(_identity, data);
+
+		/**
+		 * 객체 또는 배열을 [key] 에 해당하는 [value] 로 이루어진 배열로 반환한다.
+		 * @param {object} || [array] data
+		 * @param {object} key
+		 * @returns [array]
+		 */
+		var _pluck = (data, key) => _map(_get(key), data);
+
+		/**
+		 * 배열 또는 유사배열을 조건에 반대하여 필터링한다.
+		 * @param [array] || [arraylike] list
+		 * @param {function} predi
+		 * @returns [array]
+		 */
+		var _negate = predi => val => !predi(val);
+		var _reject = (predi, list) => _filter(_negate(predi), list);
+
+		/**
+		 * 배열의 모든 false 값(NaN, undefined, false, 0, null 또는 빈 문자열)을 제거한 후 배열을 반환한다.
+		 * @param {object} || [array] b
+		 * @returns [array]
+		 */
+		var _compact = _filter(_identity);
+
+		/**
+		 * 인자로 전달된 조건을 만족하는 배열 요소의 값만을 반환한다.
+		 * @param [array] list
+		 * @param {function} predi
+		 * @returns {object}
+		 */
+		var _find = (list, predi) => {
+			var keys = _keys(list);
+			for (var i = 0, len = keys.length; i < len; i++) {
+				var val = list[keys[i]];
+				if (predi(val)) return val;
+			}
+		}
+
+		/**
+		 * 인자로 전달된 조건을 만족하는 배열 요소의 인덱스만을 반환한다.
+		 * @param [array] list
+		 * @param {function} predi
+		 * @returns {object}
+		 */
+		var _find_index = (list, predi) => {
+			var keys = _keys(list);
+			for (var i = 0, len = keys.length; i < len; i++) {
+				var val = list[keys[i]];
+				if (predi(val)) return i;
+			}
+			return -1;
+		}
+
+		/**
+		 * 배열의 각 엘리먼트에 대해서 반환 값이 하나라도 true가 발생하면 true를 반환한다.
+		 * @param [array] list
+		 * @param {function} predi
+		 * @returns {boolean}
+		 */
+		var _some = (list, predi) => _find_index(list, predi) != -1;
+
+		/**
+		 * 배열의 각 엘리먼트에 대해서 반환 값이 모두 true가 발생하면 true를 반환한다.
+		 * @param [array] list
+		 * @param {function} predi
+		 * @returns {boolean}
+		 */
+		var _every = (list, predi) => _find_index(list, _negate(predi)) == -1;
+
+		/**
+		 * 배열의 각 엘리먼트에 대해서 주어진 숫자들 중 가장 작은/큰 값을 반환한다.
+		 * @param [array] list
+		 * @returns {object}
+		 */
+		var _min = list => _reduce(list, (a, b) => a < b ? a : b);
+		var _max = list => _reduce(list, (a, b) => a > b ? a : b);
+
+		/**
+		 * 배열의 각 엘리먼트에 대해서 주어진 숫자들 중 조건에 따른 가장 작은/큰 값을 반환한다.
+		 * @param [array] list
+		 * @param {function} iter
+		 * @returns {object}
+		 */
+		var _min_by = (list, iter) => _reduce(list, (a, b) => iter(a) < iter(b) ? a : b);
+		var _max_by = (list, iter) => _reduce(list, (a, b) => iter(a) > iter(b) ? a : b);
+		_min_by = _curryr(_min_by),
+			_max_by = _curryr(_max_by);
+
+		/**
+		 * 배열의 각 엘리멘트를 주어진 조건에 따라 묶거나 분류하여 새로운 객체로 반환한다.
+		 * @param [array] list
+		 * @param {function} iter
+		 * @returns {object}
+		 */
+		var _push = (memo, key, val) => {
+			(memo[key] = memo[key] || []).push(val);
+			return memo;
+		}
+		var _group_by = (list, iter) => _reduce(list, (val, memo) => _push(memo, iter(val), val), {})
+		_group_by = _curryr(_group_by);
+		var _head = data => data[0];
+
+		/**
+		 * 배열의 각 엘리멘트를 주어진 조건의 개수에 따라 묶거나 분류하여 새로운 객체로 반환한다.
+		 * @param [array] list
+		 * @param {function} iter
+		 * @returns {object}
+		 */
+		var _inc = (memo, key) => {
+			memo[key] ? memo[key]++ : memo[key] = 1;
+			return memo;
+		}
+		var _count_by = (list, iter) => _reduce(list, (val, memo) => _inc(memo, iter(val)), {});
+		_count_by = _curryr(_count_by);
+
+		/**
+		 * 지연 평가
+		 * @param [array] _.range(100)
+		 * @param {function} L.map, L.filter, L.reject
+		 * @param {function} L.take, L.some, L.every, L.find
+		 * @returns {object}
+		 */
+		var mi = 0;
+		var fi = 0;
+		_.go(
+			_.range(100),
+			L.map(val => {
+				++mi;
+				return val * val;
+			}),
+			L.filter(val => {
+				++fi;
+				return val % 2;
+			}),
+			// L.reject(val => {
+			// 	++fi;
+			// 	return val % 2;
+			// }),
+			L.take(5),
+			// L.some(val => val > 100),
+			// L.every(val => val < 100),
+			// L.find(val => val > 100),
+			console.log
+		)
+		console.log(mi, fi);
+
+	</script>
+
+</body>
+
+</html>
